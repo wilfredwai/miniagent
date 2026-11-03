@@ -8,7 +8,21 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
         if valid_target_dir != working_dir_abs:
             return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
         if not os.path.isdir(target_dir):
-            return f'Error: "{directory}" is not a directory'    
-        return f'Success: "{directory}" is within the working directory'
+            return f'Error: "{directory}" is not a directory'
+
+        items = []
+        names = sorted(
+            os.listdir(target_dir),
+            key=lambda name: (os.path.isdir(os.path.join(target_dir, name)), name),
+        )
+        for name in names:
+            item_path = os.path.join(target_dir, name)
+            file_size = os.path.getsize(item_path)
+            is_dir = os.path.isdir(item_path)
+            items.append(
+                f"  - {name}: file_size={file_size} bytes, is_dir={is_dir}"
+            )
+        return "\n".join(items)
     except Exception as e:
         return f"Error: {e}"
+#print(get_files_info("calcualtor", "pkg"))
