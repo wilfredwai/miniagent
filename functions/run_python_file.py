@@ -1,3 +1,33 @@
+schema_run_python_file = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Run or execute the file in a specified directory relative to the working directory, it will check the targeted file is a valid python file",
+        "parameters": {
+            "required": ["file_path"],
+            "type": "object",
+            "properties": {
+                "directory": {
+                    "type": "string",
+                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
+                "file_path": {
+                    "type": "string",
+                    "description": "The location of the .py file",
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                    "description": "Optional command-line arguments",
+                    }
+                    
+                }
+                }
+                },
+            },
+        },
+    },
+}
+
 import os
 import subprocess
 

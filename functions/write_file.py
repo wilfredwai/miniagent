@@ -1,3 +1,29 @@
+schema_write_file = {
+    "type": "function",
+    "function": {
+        "name": "write_file",
+        "description": "Write or overwrite the content into a specified file relative to the working directory, it will check the targeted file is a valid or not",
+        "parameters": {
+            "required": ["file_path, content"],
+            "type": "object",
+            "properties": {
+                "directory": {
+                    "type": "string",
+                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
+                "file_path": {
+                    "type": "string",
+                    "description": "Location of the file to be written",
+                "conetent": {
+                     "type": "string",
+                     "description": "The content, characters will be use for write or overwrite to the file",
+                }
+                }
+                },
+            },
+        },
+    },
+}
+
 import os
 
 def write_file(working_directory: str, file_path: str, content: str) -> str:

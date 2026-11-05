@@ -1,3 +1,25 @@
+schema_get_file_content = {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description": "Open the file in a specified directory relative to the working directory, providing the content inside the file",
+        "parameters": {
+            "required": ["file_path"],
+            "type": "object",
+            "properties": {
+                "directory": {
+                    "type": "string",
+                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
+                "file_path": {
+                    "type": "string",
+                    "description": "Location of the file to be written",
+                }
+                },
+            },
+        },
+    },
+}
+
 import os
 from config import MAX_CHARS
 

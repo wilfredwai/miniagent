@@ -2,7 +2,7 @@ import json
 import os
 import argparse
 from prompts import system_prompt
-from call_function import available_functions
+from call_function import available_functions, call_function
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -35,21 +35,26 @@ def main() -> None:
     )
     message = response.choices[0].message
     if message.tool_calls:
+        print("Response:")
         for tool_call in message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
+            result_message = call_function(tool_call, args.verbose)
+            if not result_message["content"]:
+                raise Exception ("Error No content return from 'call_function'")
+            if args.verbose:
+                print(f"-> {result_message['content']}")
+
     if message.tool_calls is None:
         print(message.content)
         
-    if args.verbose:
-        if response.usage is None:
-            raise RuntimeError("failed API request")
-        print(f"User prompt: {args.user_prompt}")
-        print(f"Prompt tokens: {response.usage.prompt_tokens}")
-        print(f"Response tokens: {response.usage.completion_tokens}")
-    print("Response:")
-    print(response.choices[0].message.content)
-
+    if response.usage is None:
+        raise RuntimeError("failed API request")
 
 if __name__ == "__main__":
     main()
+
+        #print(f"User prompt: {args.user_prompt}")
+        #print(f"Prompt tokens: {response.usage.prompt_tokens}")
+        #print(f"Response tokens: {response.usage.completion_tokens}")
+    #print("Response:")
+    #print(f"-> {result_message['content']}")
+    #print(response.choices[0].message.content)
