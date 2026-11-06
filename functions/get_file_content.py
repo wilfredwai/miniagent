@@ -7,9 +7,6 @@ schema_get_file_content = {
             "required": ["file_path"],
             "type": "object",
             "properties": {
-                "directory": {
-                    "type": "string",
-                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
                 "file_path": {
                     "type": "string",
                     "description": "Location of the file to be written",
@@ -17,8 +14,8 @@ schema_get_file_content = {
                 },
             },
         },
-    },
-}
+    }
+
 
 import os
 from config import MAX_CHARS

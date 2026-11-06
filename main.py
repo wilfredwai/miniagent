@@ -1,8 +1,9 @@
 import json
 import os
 import argparse
-from prompts import system_prompt
-from call_function import available_functions, call_function
+from agent_call_loop import agent_call
+# from prompts import system_prompt
+# from call_function import available_functions, call_function
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -16,6 +17,7 @@ def main() -> None:
     client = OpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=api_key,
+        
     )
     parser = argparse.ArgumentParser(description="Chatbot")
     parser.add_argument("user_prompt", type=str, help="User prompt")
@@ -23,31 +25,36 @@ def main() -> None:
     args = parser.parse_args()
     # Now we can access `args.user_prompt`
 
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": args.user_prompt},
-    ]
+    final_result = agent_call(client, args)
+    
+    print("Final response:")
+    print(final_result)
 
-    response = client.chat.completions.create(
-        model="openrouter/free",
-        messages=messages,
-        tools=available_functions,
-    )
-    message = response.choices[0].message
-    if message.tool_calls:
-        print("Response:")
-        for tool_call in message.tool_calls:
-            result_message = call_function(tool_call, args.verbose)
-            if not result_message["content"]:
-                raise Exception ("Error No content return from 'call_function'")
-            if args.verbose:
-                print(f"-> {result_message['content']}")
+    # messages = [
+    #     {"role": "system", "content": system_prompt},
+    #     {"role": "user", "content": args.user_prompt},
+    # ]
 
-    if message.tool_calls is None:
-        print(message.content)
+    # response = client.chat.completions.create(
+    #     model="openrouter/free",
+    #     messages=messages,
+    #     tools=available_functions,
+    # )
+    # message = response.choices[0].message
+    # if message.tool_calls:
+    #     print("Response:")
+    #     for tool_call in message.tool_calls:
+    #         result_message = call_function(tool_call, args.verbose)
+    #         if not result_message["content"]:
+    #             raise Exception ("Error No content return from 'call_function'")
+    #         if args.verbose:
+    #             print(f"-> {result_message['content']}")
+
+    # if message.tool_calls is None:
+    #     print(message.content)
         
-    if response.usage is None:
-        raise RuntimeError("failed API request")
+    # if response.usage is None:
+    #     raise RuntimeError("failed API request")
 
 if __name__ == "__main__":
     main()

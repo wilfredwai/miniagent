@@ -7,17 +7,13 @@ schema_write_file = {
             "required": ["file_path, content"],
             "type": "object",
             "properties": {
-                "directory": {
-                    "type": "string",
-                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
                 "file_path": {
                     "type": "string",
                     "description": "Location of the file to be written",
-                "conetent": {
+                },
+                "content": {
                      "type": "string",
                      "description": "The content, characters will be use for write or overwrite to the file",
-                }
-                }
                 },
             },
         },

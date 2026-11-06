@@ -7,26 +7,21 @@ schema_run_python_file = {
             "required": ["file_path"],
             "type": "object",
             "properties": {
-                "directory": {
-                    "type": "string",
-                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
                 "file_path": {
                     "type": "string",
                     "description": "The location of the .py file",
+                },
                 "args": {
                     "type": "array",
                     "items": {
                         "type": "string",
+                    },
                     "description": "Optional command-line arguments",
                     }
-                    
-                }
-                }
                 },
             },
         },
-    },
-}
+    }
 
 import os
 import subprocess
